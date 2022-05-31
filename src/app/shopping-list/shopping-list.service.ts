@@ -21,7 +21,7 @@ export class ShoppingListService {
     // for (let ingredient of ingredients) {
     //   this.addIngredient(ingredient);
     // }
-    this.ingredients.push(...ingredients);
+    this.ingredients.push(...ingredients); // add all in on go then emit
     this.ingredientsChanged.emit(this.ingredients.slice());
   }
 }
