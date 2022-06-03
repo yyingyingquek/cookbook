@@ -3,18 +3,31 @@ import { RouterModule, Routes } from '@angular/router';
 import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
+import { RecipeResolverService } from './recipes/recipes-resolver.service';
 
 import { RecipesComponent } from './recipes/recipes.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/recipes', pathMatch: 'full' }, // only when the full path is empty, then it will redirect to recipes
-  { path: 'recipes', component: RecipesComponent, children: [
-      { path: '', component: RecipeStartComponent},
-      { path: 'new', component: RecipeEditComponent}, // hardcoded ones should come first
-      { path: ':id', component: RecipeDetailComponent}, // localhost/recipes/:id
-      { path: ':id/edit', component: RecipeEditComponent}
-  ] },
+  {
+    path: 'recipes',
+    component: RecipesComponent,
+    children: [
+      { path: '', component: RecipeStartComponent },
+      { path: 'new', component: RecipeEditComponent }, // hardcoded ones should come first
+      {
+        path: ':id',
+        component: RecipeDetailComponent,
+        resolve: [RecipeResolverService],
+      }, // localhost/recipes/:id
+      {
+        path: ':id/edit',
+        component: RecipeEditComponent,
+        resolve: [RecipeResolverService],
+      },
+    ],
+  },
   { path: 'shopping-list', component: ShoppingListComponent },
 ];
 
