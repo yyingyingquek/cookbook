@@ -8,7 +8,7 @@
       >
         <span class="icon-bar" *ngFor="let iconBar of [1, 2, 3]"></span>
       </button>
-      <a href="#" class="navbar-brand">Recipe Book</a>
+      <a href="#" class="navbar-brand">CookBook</a>
     </div>
     <div
       class="navbar-collapse"
@@ -20,6 +20,9 @@
         <li routerLinkActive="active">
           <a routerLink="/shopping-list">Shopping List</a>
         </li>
+        <li routerLinkActive="active">
+          <a routerLink="/auth">Authenticate</a>
+        </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown" appDropdown>
@@ -27,8 +30,12 @@
             >Manage <span class="caret"></span
           ></a>
           <ul class="dropdown-menu">
-            <li><a style="cursor: pointer" (click)="onSaveData()">Save Data</a></li>
-            <li><a style="cursor: pointer" (click)="onFetchData()">Fetch Data</a></li>
+            <li>
+              <a style="cursor: pointer" (click)="onSaveData()">Save Data</a>
+            </li>
+            <li>
+              <a style="cursor: pointer" (click)="onFetchData()">Fetch Data</a>
+            </li>
           </ul>
         </li>
       </ul>
