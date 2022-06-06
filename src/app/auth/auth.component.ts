@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthResponseData, AuthService } from './auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -11,7 +13,7 @@ export class AuthComponent implements OnInit {
   isLoading: boolean = false;
   error: string = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {}
 
@@ -24,26 +26,33 @@ export class AuthComponent implements OnInit {
     if (!form.valid) {
       return;
     }
+    this.isLoading = true;
+
     const email = form.value.email;
     const password = form.value.password;
 
-    this.isLoading = true;
+    let authObservable: Observable<AuthResponseData>;
 
+    // storing the observable into the variable as we are sure that either one will be triggered
     if (this.isLoginMode) {
-      // ..
+      authObservable = this.authService.logIn(email, password);
     } else {
-      this.authService.signUp(email, password).subscribe({
-        next: (response) => {
-          console.log(response);
-          this.isLoading = false;
-        },
-        error: (errorMessage) => {
-          console.log(errorMessage);
-          this.error = errorMessage;
-          this.isLoading = false;
-        },
-      });
+      authObservable = this.authService.signUp(email, password);
     }
+
+    // subscribe on the variable because the code is the same regardless is it signup or login
+    authObservable.subscribe({
+      next: (response) => {
+        console.log(response);
+        this.isLoading = false;
+        this.router.navigate(['/recipes']);
+      },
+      error: (errorMessage) => {
+        console.log(errorMessage);
+        this.error = errorMessage;
+        this.isLoading = false;
+      },
+    });
 
     form.reset();
   }

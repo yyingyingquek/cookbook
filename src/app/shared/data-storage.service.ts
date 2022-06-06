@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, take, exhaustMap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class DataStorageService {
-  constructor(private http: HttpClient, private recipeService: RecipeService) {}
+  constructor(
+    private http: HttpClient,
+    private recipeService: RecipeService,
+    private authService: AuthService
+  ) {}
 
   storeRecipes() {
     const recipes = this.recipeService.getRecipes();
@@ -19,6 +24,9 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
+    // take(1) - only want to take 1 value from the observable and then automatically unsubscribe
+    // exhaustMap - wait for first observable to complete, then gives us the user and return new observable in there
+    // add the map and tap operators as next steps, and return the entire observable
     return this.http
       .get<Recipe[]>(
         'https://coobook-max-default-rtdb.asia-southeast1.firebasedatabase.app/recipes.json'
@@ -37,9 +45,5 @@ export class DataStorageService {
           this.recipeService.setRecipes(recipes);
         })
       );
-    //   .subscribe((recipes) => {
-    //     console.log(recipes);
-    //     this.recipeService.setRecipes(recipes);
-    //   });
   }
 }
