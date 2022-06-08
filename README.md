@@ -11,8 +11,8 @@ Since I am learning Angular from Maximillian on Udemy, it was good that I follow
 
 ## Additional Things to Do
 
-1. To finish up the unit testing module and the NgRx module. Currently still WIP.
-2. Read up on Angular 14
+1. To finish up the unit testing module (complete) and the NgRx module. Currently still WIP.
+2. Read up on Angular 14 (standalone components complete)
 
 ### Resources
 
